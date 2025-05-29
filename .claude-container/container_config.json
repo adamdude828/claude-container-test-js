@@ -1,5 +1,8 @@
 {
-  "env_vars": {},
+  "env_vars": {
+    "GIT_USER_NAME": "Adam Holsinger",
+    "GIT_USER_EMAIL": "adamholsinger@gmail.com"
+  },
   "runtime_versions": [],
   "custom_commands": [],
   "base_image": "node:20",
