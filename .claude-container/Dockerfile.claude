@@ -1,0 +1,48 @@
+FROM node:20
+
+# Install required system packages (minimal for now)
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+# Create node user's directories (node user already exists in the base image)
+RUN mkdir -p /home/node/.npm-global &&     mkdir -p /workspace &&     mkdir -p /root &&     chmod 777 /root &&     chown -R node:node /home/node /workspace
+
+# Switch to node user
+USER node
+
+# Set up environment variables for node user
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH="/home/node/.npm-global/bin:$PATH"
+ENV HOME=/home/node
+
+# Install Claude Code globally as node user
+RUN npm install -g @anthropic-ai/claude-code
+
+# No runtime overrides
+
+ENV GIT_USER_NAME="Adam Holsinger"
+ENV GIT_USER_EMAIL="adamholsinger@gmail.com"
+
+# No custom commands
+
+# Copy project code (always included)
+COPY --chown=node:node . /workspace
+
+# Configure git safe directory for root
+USER root
+RUN git config --global --add safe.directory /workspace &&     git config --global --add safe.directory '*'
+
+# Switch to node user for git operations and configuration
+USER node
+RUN git config --global --add safe.directory /workspace &&     git config --global --add safe.directory '*' &&     cd /workspace &&     if [ -d .git ]; then         echo "Cleaning git repository state..." &&         git reset --hard &&         git clean -fd &&         if git show-ref --verify --quiet refs/heads/master; then             git checkout master;         elif git show-ref --verify --quiet refs/heads/main; then             git checkout main;         else             echo "Warning: Neither master nor main branch found";         fi;     fi
+
+# Create .claude directory and liberal permissions settings file (overwrite any existing)
+RUN mkdir -p /workspace/.claude &&     rm -f /workspace/.claude/settings.local.json &&     echo '{"permissions": {"allow": ["Bash(*)", "Edit(*)", "Write(*)", "NotebookEdit(*)", "WebFetch(*)"]}}' > /workspace/.claude/settings.local.json &&     chmod 644 /workspace/.claude/settings.local.json
+
+# Configure git with user information from host
+RUN if [ -n "$GIT_USER_NAME" ]; then git config --global user.name "$GIT_USER_NAME"; fi &&     if [ -n "$GIT_USER_EMAIL" ]; then git config --global user.email "$GIT_USER_EMAIL"; fi
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command - bash for interactive sessions
+CMD ["/bin/bash"]
