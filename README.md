@@ -24,3 +24,9 @@ So when the world seems dark and cold,
 Remember tales that have been told,
 Of one who chose to stand and fight,
 To be the world's enduring light.
+
+## Haiku
+
+Red cape flows through sky  
+Man of Steel protects us all  
+Hope soars above earth
