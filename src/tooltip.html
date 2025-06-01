@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooltip Component Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            line-height: 1.6;
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+        }
+        
+        .hover-target {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        
+        .hover-target:hover {
+            background: #0056b3;
+        }
+        
+        .text-element {
+            text-decoration: underline;
+            color: #007bff;
+            cursor: help;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tooltip Component Demo</h1>
+    
+    <div class="demo-section">
+        <h2>Basic Usage</h2>
+        <p>Hover over the elements below to see tooltips:</p>
+        
+        <button class="hover-target" data-tooltip="This is a button tooltip">Button with Tooltip</button>
+        <a href="#" class="hover-target" data-tooltip="This link goes nowhere">Link with Tooltip</a>
+        <span class="text-element" data-tooltip="Additional information about this term">Technical Term</span>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Various Positions</h2>
+        <p>Move your mouse around these elements to see tooltip positioning:</p>
+        
+        <div style="display: flex; justify-content: space-between; margin: 20px 0;">
+            <span class="hover-target" data-tooltip="Top left corner tooltip">Top Left</span>
+            <span class="hover-target" data-tooltip="Top right corner tooltip">Top Right</span>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; margin: 20px 0;">
+            <span class="hover-target" data-tooltip="Bottom left corner tooltip">Bottom Left</span>
+            <span class="hover-target" data-tooltip="Bottom right corner tooltip">Bottom Right</span>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <span class="hover-target" data-tooltip="Center positioned tooltip">Center Element</span>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Long Text</h2>
+        <span class="text-element" data-tooltip="This is a longer tooltip text that demonstrates how the component handles longer content without wrapping">Element with Long Tooltip</span>
+    </div>
+
+    <script src="tooltip.js"></script>
+    <script>
+        new Tooltip();
+    </script>
+</body>
+</html>
